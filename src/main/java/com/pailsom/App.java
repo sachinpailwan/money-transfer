@@ -3,6 +3,8 @@ package com.pailsom;
 
 import com.pailsom.controller.RestVerticleController;
 import io.vertx.core.Vertx;
+import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.logging.SLF4JLogDelegateFactory;
 
 public class App
 {

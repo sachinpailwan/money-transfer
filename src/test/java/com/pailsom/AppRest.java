@@ -76,7 +76,7 @@ public class AppRest {
         Assert.assertEquals("Somnath" , jsonPath.getString("name"));
 
         // invalid deposit
-        response = get("/account/"+accountId+"/deposit/"+-1)
+        response = patch("/account/"+accountId+"/deposit/"+-1)
                 .then().contentType(ContentType.JSON).extract().response();
         Assert.assertEquals(400,response.statusCode());
         Assert.assertTrue(response.body().print().contains("Invalid deposit"));
@@ -101,7 +101,7 @@ public class AppRest {
         Assert.assertEquals(200,response.statusCode());
         int toAccountId = response.body().jsonPath().getInt("id");
 
-        response = get("/account/"+toAccountId+"/deposit/"+1000.45)
+        response = patch("/account/"+toAccountId+"/deposit/"+1000.45)
                 .then().contentType(ContentType.JSON).extract().response();
         Assert.assertEquals(200,response.statusCode());
         float toAmount = response.body().jsonPath().getFloat("amount");

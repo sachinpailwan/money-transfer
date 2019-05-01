@@ -52,7 +52,7 @@ public class DeadLockRepositoryTest {
         });
         LongAdder counter = new LongAdder();
         List<Runnable> transferFunctions = new ArrayList<>(6000);
-        IntStream.range(0,100).forEach(t->{
+        IntStream.range(0,1000).forEach(t->{
             transferFunctions.add(transactionRequest(accounts.get(0),accounts.get(1)));
             transferFunctions.add(transactionRequest(accounts.get(0),accounts.get(2)));
             transferFunctions.add(transactionRequest(accounts.get(2),accounts.get(1)));
@@ -66,7 +66,7 @@ public class DeadLockRepositoryTest {
                         return null;
                 })
                 .forEach(x -> counter.increment());
-        Assert.assertEquals(600,counter.intValue());
+        Assert.assertEquals(6000,counter.intValue());
         Assert.assertEquals(300000,accounts.stream().map(k->repository.getUser(k).getAmount()).mapToInt(t->t.intValue()).sum());
     }
     private Runnable transactionRequest(int id1, int id2) {

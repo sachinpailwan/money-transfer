@@ -79,7 +79,6 @@ public class DeadLockRestTest {
                 data.put("amount", 1);
                 Response response = given().body(data.getMap()).request().post("/transfer");
                 Assert.assertEquals(200, response.statusCode());
-                System.out.println("Account :" + id1 + " has transfered amount " + 1 + " to Account :" + id2);
             }catch (Exception ex){
 
             }

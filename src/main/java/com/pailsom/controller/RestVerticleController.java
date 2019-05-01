@@ -16,10 +16,14 @@ import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
+import io.vertx.core.logging.Logger;
+import io.vertx.core.logging.LoggerFactory;
+import io.vertx.core.logging.SLF4JLogDelegateFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 import io.vertx.ext.web.handler.CorsHandler;
+
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -28,12 +32,17 @@ import java.util.Set;
 
 public class RestVerticleController extends AbstractVerticle{
 
+
+    private Logger logger = LoggerFactory.getLogger(RestVerticleController.class);
     public static final String ONE_OF_ACCOUNTS_NOT_FOUND = "One of accounts not found";
     public static final String YOU_CAN_T_TRANSFER_MONEY_FROM_ACCOUNT_TO_ITSELF = "You can't transfer money from account to itself";
     public static final String USER_WITH_ID_0_HAS_NO_ENOUGH_MONEY = "User with id {0} has no enough money";
     private IAccountRepository repository;
     int port = 8091;
 
+    static {
+        System.setProperty(LoggerFactory.LOGGER_DELEGATE_FACTORY_CLASS_NAME, SLF4JLogDelegateFactory.class.getName());
+    }
     @Override
     public void init(Vertx vertx, Context context) {
         super.init(vertx, context);
@@ -74,11 +83,12 @@ public class RestVerticleController extends AbstractVerticle{
                         future.fail(result.cause());
                     }
                 });
-        System.out.println("vertex is available on port :"+port);
+        logger.info("Vertx Server is available on port "+port);
     }
 
     private void getUser(RoutingContext routingContext) {
         int id = Integer.parseInt(routingContext.request().getParam("id"));
+        logger.info("Received GET /account/{}",id);
         routingContext.response()
                 .putHeader("content-type", "application/json")
                 .setStatusCode(200)
@@ -87,8 +97,8 @@ public class RestVerticleController extends AbstractVerticle{
 
 
     private void createAccount(RoutingContext routingContext) {
-
         JsonObject jsonObject = routingContext.getBodyAsJson();
+        logger.info("Received POST /accounts/create with json "+jsonObject.toString());
         routingContext.response()
                 .putHeader("content-type", "application/json")
                 .setStatusCode(200)
@@ -98,7 +108,7 @@ public class RestVerticleController extends AbstractVerticle{
     private void deposit(RoutingContext routingContext) {
         int id = Integer.parseInt(routingContext.request().getParam("id"));
         BigDecimal amount = new BigDecimal(routingContext.request().getParam("amount"));
-
+        logger.info("Received PATCH /accounts/"+id+"/deposit/"+id,amount);
         AccountDTO accountDTO = null;
         try {
             accountDTO = repository.deposit(id,amount);
@@ -124,6 +134,7 @@ public class RestVerticleController extends AbstractVerticle{
 
     private void transfer(RoutingContext routingContext) {
         JsonObject jsonObject = routingContext.getBodyAsJson();
+        logger.info("Received POST /transfer with "+jsonObject.toString());
         int statusCode = 404;
         String msg = "";
         try {
