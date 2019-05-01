@@ -12,32 +12,41 @@ Technology Stack Used
 
 Following API are exposed
 
-1. create account - /accounts/create POST method and require following json input
+1. create account - http://localhost:8091/accounts/create POST method and require following json input
    {
       "name":"Account Owner Name",
       "Type":"Type of Account"
    }
    Successful response will have following json
    {
-       "id": 1,
-       "name": "account owner name",
-       "type": "account type",
-       "amount": "account balancing amount default 0",
-       "creationDate":"account creational date and time"
+       "id": <Account Id>,
+       "name": < Account Owner>,
+       "type": <Account Type>,
+       "amount": <Account Balancing amount default 0>,
+       "creationDate":<Account Creational date and time>
      }
-2. deposit the amount - /accounts/:id/deposit/:amount PATCH method
+
+2. Deposit the amount - http://localhost:8091/accounts/:id/deposit/:amount PATCH method
    Example - /accounts/1/deposit/23.45
            - /accounts/1/deposit/100
 
-3. transfer -/transfer POST method and require following json input
+3. Transfer - http://localhost:8091/transfer POST method and require following json input
    {
      "from":<transfer fund from account>
      "to" :<to account which will receive amount>
      "amount":<transfer amount>
    }
    Response - it will return list of json account objects
-4. User detail /account/:id
-   Response
+
+4. User detail http://localhost:8091/account/:id
+   Response User AccountDTO Json
+   {
+       "id": < Account ID >,
+       "amount": <Balance Amount>,
+       "name": < Account Owner>,
+       "type": < Account Type>
+   }
+
 
 All amounts are BigDecimals.
 

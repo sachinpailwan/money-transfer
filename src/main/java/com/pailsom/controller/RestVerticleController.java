@@ -88,7 +88,7 @@ public class RestVerticleController extends AbstractVerticle{
 
     private void getUser(RoutingContext routingContext) {
         int id = Integer.parseInt(routingContext.request().getParam("id"));
-        logger.info("Received GET /account/{}",id);
+        logger.info("Received GET /account/"+id);
         routingContext.response()
                 .putHeader("content-type", "application/json")
                 .setStatusCode(200)
