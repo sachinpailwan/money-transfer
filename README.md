@@ -1,4 +1,4 @@
-# money-transfer 
+# Money-transfer Task
 
 This task will be used to mimic money transfer API between accounts
 
@@ -25,8 +25,9 @@ Following API are exposed
        "amount": "account balancing amount default 0",
        "creationDate":"account creational date and time"
      }
-2. deposit the amount - /accounts/:id/deposit/:amount GET method
+2. deposit the amount - /accounts/:id/deposit/:amount PATCH method
    Example - /accounts/1/deposit/23.45
+           - /accounts/1/deposit/100
 
 3. transfer -/transfer POST method and require following json input
    {

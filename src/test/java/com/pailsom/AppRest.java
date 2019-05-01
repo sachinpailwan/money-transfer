@@ -22,6 +22,7 @@ import java.util.List;
 
 import static com.jayway.restassured.RestAssured.get;
 import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.patch;
 
 public class AppRest {
 
@@ -66,7 +67,7 @@ public class AppRest {
         int accountId = response.body().jsonPath().getInt("id");
 
         // deposit amount
-        response = get("/account/"+accountId+"/deposit/"+depositAmount)
+        response = patch("/account/"+accountId+"/deposit/"+depositAmount)
                 .then().contentType(ContentType.JSON).extract().response();
         Assert.assertEquals(200,response.statusCode());
         JsonPath jsonPath = response.jsonPath();
@@ -90,7 +91,7 @@ public class AppRest {
         Assert.assertEquals(200,response.statusCode());
         int fromAccountId = response.body().jsonPath().getInt("id");
 
-        response = get("/account/"+fromAccountId+"/deposit/"+134.45)
+        response = patch("/account/"+fromAccountId+"/deposit/"+134.45)
                 .then().contentType(ContentType.JSON).extract().response();
         Assert.assertEquals(200,response.statusCode());
         float fromAmount = response.body().jsonPath().getFloat("amount");

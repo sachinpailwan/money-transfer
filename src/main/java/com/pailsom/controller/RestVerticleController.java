@@ -61,7 +61,7 @@ public class RestVerticleController extends AbstractVerticle{
                 .allowedHeaders(allowHeaders)
                 .allowedMethods(allowMethods));
         router.post("/account/create").handler(this::createAccount);
-        router.get("/account/:id/deposit/:amount").handler(this::deposit);
+        router.patch("/account/:id/deposit/:amount").handler(this::deposit);
         router.post("/transfer").handler(this::transfer);
         router.get("/account/:id").handler(this::getUser);
 
